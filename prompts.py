@@ -34,6 +34,6 @@ day_prompt = Bullet(
         **STYLE
     )
 
-def yesno(question):
-    return yes_no_prompt(question)
+def yes_no_prompt(question):
+    return YesNo(question)
         

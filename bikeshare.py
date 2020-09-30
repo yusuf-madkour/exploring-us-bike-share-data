@@ -1,11 +1,15 @@
 import time
 import pandas as pd
 import pprint
+from os import system
 from prompts import city_prompt, filter_prompt, month_prompt, day_prompt, yes_no_prompt
 
-CITY_DATA = { "Chicago": "chicago.csv",
-              "New York City": "new_york_city.csv",
-              "Washington": "washington.csv" }
+CITY_DATA = {
+    "Chicago": "chicago.csv",
+    "New York City": "new_york_city.csv",
+    "Washington": "washington.csv",
+}
+
 
 def get_filters():
     """
@@ -29,14 +33,14 @@ def get_filters():
         day = day_prompt.launch()
         month = "All"
 
-    elif _filter =="Both":
+    elif _filter == "Both":
         month = month_prompt.launch()
         day = day_prompt.launch()
 
     else:
         month, day = "All", "All"
 
-    print('-'*40)
+    print("-" * 40)
     return city, month, day
 
 
@@ -55,7 +59,7 @@ def load_data(city, month, day):
     # load data file into a dataframe
     df = pd.read_csv(CITY_DATA[city])
     # drop the unused 'Unnamed' column
-    df = df.drop('Unnamed: 0', axis=1)
+    df = df.drop("Unnamed: 0", axis=1)
     # convert the Start Time column to datetime
     df["Start Time"] = pd.to_datetime(df["Start Time"])
     # extract month, day of week and hour from Start Time to create new columns
@@ -75,6 +79,7 @@ def load_data(city, month, day):
 
     return df
 
+
 def get_most_popular(series):
     """
     Gets the most repeated data entry in a pandas Series and its occurrences' count
@@ -88,6 +93,7 @@ def get_most_popular(series):
     most_popular = series.mode()[0]
     count = sum(series == most_popular)
     return most_popular, count
+
 
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
@@ -108,7 +114,7 @@ def time_stats(df):
     print(f"Most popular trip start hour: {most_popular_hour}, Count: {hour_count}")
 
     print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    print("-" * 40)
 
 
 def station_stats(df):
@@ -117,7 +123,9 @@ def station_stats(df):
     print("\nDisplaying the most Popular stations\n")
     start_time = time.time()
 
-    most_popular_start_station, start_station_count = get_most_popular(df["Start Station"])
+    most_popular_start_station, start_station_count = get_most_popular(
+        df["Start Station"]
+    )
     print(f"Most commonly used start station: {most_popular_start_station}")
     print(f"It has been used {start_station_count} times\n")
 
@@ -125,14 +133,19 @@ def station_stats(df):
     print(f"Most commonly used end station: {most_popular_end_station}")
     print(f"It has been used {end_station_count} times\n")
 
-    df["Combined Stations"] = df["Start Station"].apply(lambda x: x +  " and ")\
-                            + df["End Station"]
-    most_popular_combined_station, combined_station_count = get_most_popular(df["Combined Stations"])
-    print(f"Most common combination of start station and end station: {most_popular_combined_station}")
+    df["Combined Stations"] = (
+        df["Start Station"].apply(lambda x: x + " and ") + df["End Station"]
+    )
+    most_popular_combined_station, combined_station_count = get_most_popular(
+        df["Combined Stations"]
+    )
+    print(
+        f"Most common combination of start station and end station: {most_popular_combined_station}"
+    )
     print(f"They have been used {combined_station_count} times\n")
 
     print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    print("-" * 40)
 
 
 def trip_duration_stats(df):
@@ -146,7 +159,7 @@ def trip_duration_stats(df):
     print("Average trip duration: {} seconds".format(df["Trip Duration"].mean()))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    print("-" * 40)
 
 
 def user_stats(df):
@@ -155,15 +168,15 @@ def user_stats(df):
     print("\nDisplaying user stats...\n")
     start_time = time.time()
 
-    subscribers = len(df[df['User Type'] == "Subscriber"])
-    customers = len(df[df['User Type'] == "Customer"])
+    subscribers = len(df[df["User Type"] == "Subscriber"])
+    customers = len(df[df["User Type"] == "Customer"])
 
     print(f"Subscribers: {subscribers}")
     print(f"Customers: {customers}\n")
 
     if "Gender" in df.columns:
-        males = len(df[df['Gender'] == "Male"])
-        females = len(df[df['Gender'] == "Female"])
+        males = len(df[df["Gender"] == "Male"])
+        females = len(df[df["Gender"] == "Female"])
         print(f"Males: {males}")
         print(f"Females: {females}\n")
 
@@ -173,7 +186,8 @@ def user_stats(df):
         print(f"Most common year of birth: {int(df['Birth Year'].mode()[0])}")
 
     print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    print("-" * 40)
+
 
 def display_records(df):
     """
@@ -185,18 +199,20 @@ def display_records(df):
     i = 0
     pretty_printer = pprint.PrettyPrinter(indent=2)
     while True:
-        display = yes_no_prompt("\nWould you like to view individual trip data?\n").launch()
-        if not display:
+        _display = yes_no_prompt(
+            "\nWould you like to view individual trip data?\n"
+        ).launch()
+        if not _display:
             break
-        pretty_printer.pprint(df.iloc[i:i+5].to_dict(orient="records"))
+        pretty_printer.pprint(df.iloc[i : i + 5].to_dict(orient="records"))
         i += 5
 
 
 def main():
     """Runs an interactive session to get input from the user and display requested data"""
 
-    print("Hello! Let's explore some US bikeshare data!")
     while True:
+        print("Let's explore some US bikeshare data!")
         city, month, day = get_filters()
         df = load_data(city, month, day)
         # printing filter
@@ -209,6 +225,8 @@ def main():
         restart = yes_no_prompt("\nWould you like to restart?\n").launch()
         if not restart:
             break
+        system("clear")
+
 
 if __name__ == "__main__":
-	main()
+    main()

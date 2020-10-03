@@ -24,21 +24,23 @@ VALID_DAY_CHOICES = [
 ]
 VALID_FILTER_CHOICES = ["Month", "Day", "Both", "None"]
 
-city_prompt = Bullet(
-    prompt="\nPlease choose a city: ", choices=VALID_CITY_CHOICES, **STYLE
-)
 
-filter_prompt = Bullet(
-    prompt="\nWould you like to filter data by month, day, both or not at all? ",
-    choices=VALID_FILTER_CHOICES,
-    **STYLE
-)
-
-month_prompt = Bullet(prompt="\nWhich month? ", choices=VALID_MONTH_CHOICES, **STYLE)
-
-
-day_prompt = Bullet(prompt="\nWhich day? ", choices=VALID_DAY_CHOICES, **STYLE)
+def bullet_prompt(question, choices):
+    return Bullet(question, choices, **STYLE)
 
 
 def yes_no_prompt(question):
     return YesNo(question)
+
+
+city_prompt = bullet_prompt("\nPlease choose a city: ", VALID_CITY_CHOICES)
+
+filter_prompt = bullet_prompt(
+    "\nWould you like to filter data by month, day, both or not at all? ",
+    VALID_FILTER_CHOICES,
+)
+
+month_prompt = bullet_prompt("\nWhich month? ", VALID_MONTH_CHOICES)
+
+
+day_prompt = bullet_prompt("\nWhich day? ", VALID_DAY_CHOICES)

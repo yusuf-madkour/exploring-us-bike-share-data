@@ -2,7 +2,7 @@ import time
 import pandas as pd
 import pprint
 from os import system
-from prompts import city_prompt, filter_prompt, month_prompt, day_prompt, yes_no_prompt
+import prompts
 
 CITY_DATA = {
     "Chicago": "chicago.csv",
@@ -21,21 +21,21 @@ def get_filters():
         (str) day - name of the day of week to filter by, or "All" to apply no day filter
     """
 
-    city = city_prompt.launch()
+    city = prompts.city_prompt.launch()
 
-    _filter = filter_prompt.launch()
+    _filter = prompts.filter_prompt.launch()
 
     if _filter == "Month":
-        month = month_prompt.launch()
+        month = prompts.month_prompt.launch()
         day = "All"
 
     elif _filter == "Day":
-        day = day_prompt.launch()
+        day = prompts.day_prompt.launch()
         month = "All"
 
     elif _filter == "Both":
-        month = month_prompt.launch()
-        day = day_prompt.launch()
+        month = prompts.month_prompt.launch()
+        day = prompts.day_prompt.launch()
 
     else:
         month, day = "All", "All"
@@ -199,7 +199,7 @@ def display_records(df):
     i = 0
     pretty_printer = pprint.PrettyPrinter(indent=2)
     while True:
-        _display = yes_no_prompt(
+        _display = prompts.yes_no_prompt(
             "\nWould you like to view individual trip data?\n"
         ).launch()
         if not _display:
@@ -222,7 +222,7 @@ def main():
         trip_duration_stats(df)
         user_stats(df)
         display_records(df)
-        restart = yes_no_prompt("\nWould you like to restart?\n").launch()
+        restart = prompts.yes_no_prompt("\nWould you like to restart?\n").launch()
         if not restart:
             break
         system("clear")

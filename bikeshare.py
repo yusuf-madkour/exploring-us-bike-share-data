@@ -5,9 +5,9 @@ from os import system
 import prompts
 
 CITY_DATA = {
-    "Chicago": "chicago.csv",
-    "New York City": "new_york_city.csv",
-    "Washington": "washington.csv",
+    "Chicago": "data/chicago.csv",
+    "New York City": "data/new_york_city.csv",
+    "Washington": "data/washington.csv",
 }
 
 

@@ -1,4 +1,4 @@
-# Analyzing US bike share data
+# Exploring US bike share data
 
 ## Description
 

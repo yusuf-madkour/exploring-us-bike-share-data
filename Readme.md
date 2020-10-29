@@ -12,7 +12,7 @@ In this project, I am exploring data related to bike share systems for three maj
 
 Language: Python 3.7 or above
 
-Supported OS: Ubuntu
+Supported OS: Linux
 
 Use one of the following commands in terminal after navigating to the project's directory to install the project requirements.
 

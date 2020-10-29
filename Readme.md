@@ -31,6 +31,7 @@ pip install -r requirements.txt
 Run the command below from terminal after navigating to the project directory.
 
 ```bash
+conda activate bikeshare
 python bikeshare.py
 ```
 

@@ -28,7 +28,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-Run the command below from terminal after navigating to the project directory.
+Run the commands below from terminal after navigating to the project directory.
 
 ```bash
 conda activate bikeshare
